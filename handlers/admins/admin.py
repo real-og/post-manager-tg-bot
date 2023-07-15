@@ -22,9 +22,3 @@ async def send_channels(message: types.Message, state: FSMContext):
     channels = db.get_channels()
     await message.answer(texts.your_channels, reply_markup=kb.generate_channel_kb(channels))
 
-@dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
-                    commands=['add_channel'],
-                    state='*')
-async def send_channels(message: types.Message, state: FSMContext):
-    channels = db.get_channels()
-    await message.answer(texts.your_channels, reply_markup=kb.generate_channel_kb(channels))
