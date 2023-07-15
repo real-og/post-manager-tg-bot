@@ -23,3 +23,8 @@ choose_code_type = 'выбирай тип'
 
 type_1 = 'навсегда'
 type_2 = 'пост в день'
+
+def success_added_code(code, channel, type):
+    return f"код типа {type} создан дял канала {channel}\n\n<code>{code}</code>"
+
+error_channel_id = 'что-то не добавился канал'

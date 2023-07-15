@@ -40,3 +40,10 @@ def delete_channel(id: int):
     with Database() as curs:
         _SQL = f"""DELETE FROM channels where channel_id = {id};"""
         curs.execute(_SQL)
+
+def add_code(code, type, channel_id):
+    with Database() as curs:
+        _SQL = f"""INSERT INTO access_codes (code, usage_count, limit_count, channel_id)
+                    VALUES ('{code}', 0, {type}, {channel_id});"""
+        curs.execute(_SQL)
+    
