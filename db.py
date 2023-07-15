@@ -23,13 +23,11 @@ class Database(object):
         self.conn.commit()
         self.conn.close()
 
-def get_ids():
+def get_channels():
     with Database() as curs:
         _SQL = f"""select * from channels;"""
         curs.execute(_SQL)
-        res = [channel['channel_id'] for channel in curs.fetchall()]
-        print(res)
-        return res
+        return curs.fetchall()
 
 def add_channel(id: int, name: str):
     with Database() as curs:
