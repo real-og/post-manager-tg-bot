@@ -22,6 +22,7 @@ async def send_channels(message: types.Message, state: FSMContext):
         await state.reset_state()
         await message.answer(texts.success)
     elif message.forward_from_chat:
+        await state.reset_state()
         db.add_channel(message.forward_from_chat.id, message.forward_from_chat.title)
         await message.answer(texts.success_added)
     else:

@@ -35,3 +35,8 @@ def add_channel(id: int, name: str):
                  VALUES ({id}, '{name}') 
                  ON CONFLICT DO NOTHING;"""
         curs.execute(_SQL)
+
+def delete_channel(id: int):
+    with Database() as curs:
+        _SQL = f"""DELETE FROM channels where channel_id = {id};"""
+        curs.execute(_SQL)

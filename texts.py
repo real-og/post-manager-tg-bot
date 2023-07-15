@@ -9,5 +9,8 @@ resend_message = 'добавьте бота админимтсратором в 
 success = 'успех'
 
 success_added = 'успех добавления'
+success_deleted = 'успех удаления'
 
 error_forwarded = 'что-то не то переслал'
+
+delete_channels = 'нажимай, что удалить, не забудь убрать его из админов руками'
