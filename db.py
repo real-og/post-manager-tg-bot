@@ -27,10 +27,13 @@ def get_ids():
     with Database() as curs:
         _SQL = f"""select * from channels;"""
         curs.execute(_SQL)
+        res = [channel['channel_id'] for channel in curs.fetchall()]
+        print(res)
+        return res
 
-def add_id_channel(id: int):
+def add_channel(id: int, name: str):
     with Database() as curs:
-        _SQL = f"""INSERT INTO channels (channel_id) 
-                 VALUES ({id}) 
+        _SQL = f"""INSERT INTO channels (channel_id, name) 
+                 VALUES ({id}, '{name}') 
                  ON CONFLICT DO NOTHING;"""
         curs.execute(_SQL)

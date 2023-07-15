@@ -1,3 +1,4 @@
-CREATE TABLE сhannels (
-    channel_id BIGINT PRIMARY KEY
-);
+CREATE TABLE channels (
+    channel_id BIGINT PRIMARY KEY,
+    name varchar(30)
+); 
