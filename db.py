@@ -46,4 +46,16 @@ def add_code(code, type, channel_id):
         _SQL = f"""INSERT INTO access_codes (code, usage_count, limit_count, channel_id)
                     VALUES ('{code}', 0, {type}, {channel_id});"""
         curs.execute(_SQL)
+
+def get_code(code):
+    with Database() as curs:
+        _SQL = f"""SELECT * FROM access_codes WHERE code = '{code}';"""
+        curs.execute(_SQL)
+        return curs.fetchone()
+    
+def reset_usage_count_for_code(code):
+    with Database() as curs:
+        _SQL = f"""UPDATE access_codes SET usage_count = 0, last_reset = NOW() WHERE code = '{code}'"""
+        curs.execute(_SQL)
+        
     

@@ -6,3 +6,5 @@ class State(StatesGroup):
     deleting_channel = State()
     choosing_to_create_code = State()
     choosing_type_of_code = State()
+    entering_code = State()
+    typing_message = State()

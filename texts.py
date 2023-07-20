@@ -28,3 +28,9 @@ def success_added_code(code, channel, type):
     return f"код типа {type} создан дял канала {channel}\n\n<code>{code}</code>"
 
 error_channel_id = 'что-то не добавился канал'
+
+enter_code = 'вводи код для доступа'
+
+error_code = 'проблема с кодом'
+
+success_code = 'код принят вводи сообщение'
