@@ -13,6 +13,7 @@ async def send_welcome(message: types.Message, state: FSMContext):
     if channel_id is None:
         await message.answer(texts.error_code)
     else:
+        await state.update_data(channel_id=channel_id)
         await message.answer(texts.success_code)
         await State.typing_message.set()
 

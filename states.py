@@ -8,3 +8,4 @@ class State(StatesGroup):
     choosing_type_of_code = State()
     entering_code = State()
     typing_message = State()
+    confirmation_message = State()

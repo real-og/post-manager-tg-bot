@@ -15,3 +15,5 @@ abort_kb = ReplyKeyboardMarkup([[texts.abort]])
 code_types_kb = InlineKeyboardMarkup(row_width=1)
 code_types_kb.add(InlineKeyboardButton(texts.type_1, callback_data='0'))
 code_types_kb.add(InlineKeyboardButton(texts.type_2, callback_data='1'))
+
+yes_no_kb = ReplyKeyboardMarkup([[texts.yes, texts.no]], one_time_keyboard=True)
