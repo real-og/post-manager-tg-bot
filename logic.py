@@ -28,3 +28,11 @@ def check_access_code(code):
         return result['channel_id']
     else:
         return None
+    
+
+def convert_input_to_buttons(text):
+    if text is None:
+        return []
+    buttons = text.split('\n')
+    title_url_pairs = [pair.split(' - ') for pair in buttons]
+    return title_url_pairs

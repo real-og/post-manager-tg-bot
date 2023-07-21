@@ -9,3 +9,4 @@ class State(StatesGroup):
     entering_code = State()
     typing_message = State()
     confirmation_message = State()
+    adding_buttons = State()
