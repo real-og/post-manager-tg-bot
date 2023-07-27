@@ -43,3 +43,5 @@ no = 'нет'
 use_kb = 'используй клавиатуру'
 
 instruction_for_buttons = 'добавляйте кнопки'
+
+success_posted = 'отправлено'
