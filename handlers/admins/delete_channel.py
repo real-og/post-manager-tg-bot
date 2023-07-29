@@ -15,13 +15,24 @@ async def send_channels(message: types.Message, state: FSMContext):
     await message.answer(texts.delete_channels, reply_markup=kb.generate_channel_kb(channels))
     await State.deleting_channel.set()
 
+@dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
+                    filters.Text(equals=texts.delete_channel_btn, ignore_case=True),
+                    state=State.admin_menu)
+async def send_channels(message: types.Message, state: FSMContext):
+    channels = db.get_channels()
+    await message.answer(texts.delete_channels, reply_markup=kb.generate_channel_kb(channels))
+    await State.deleting_channel.set()
+
+
 
 @dp.callback_query_handler(filters.IDFilter(chat_id=ADMIN_IDS),
                     state=State.deleting_channel)
 async def send_channels(callback: types.CallbackQuery, state: FSMContext):
     id = callback.data
     db.delete_channel(id)
-    await callback.answer(texts.success_deleted)
+    await callback.message.answer(texts.success_deleted)
+    await callback.message.answer(texts.admin_welcome, reply_markup=kb.admin_menu_kb)
+    await State.admin_menu.set()
     
 
 
