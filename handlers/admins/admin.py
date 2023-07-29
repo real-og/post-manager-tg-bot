@@ -12,7 +12,7 @@ chat_id = -1001611331902
                     commands=['admin'],
                     state='*')
 async def send_welcome_admin(message: types.Message, state: FSMContext):
-    await message.answer(texts.admin_welcome)
+    await message.answer(texts.admin_welcome, reply_markup=kb.admin_menu_kb)
 
 
 @dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),

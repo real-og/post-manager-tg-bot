@@ -18,6 +18,7 @@ async def send_channels(message: types.Message, state: FSMContext):
 @dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
                     state=State.waiting_message_from_channels)
 async def send_channels(message: types.Message, state: FSMContext):
+    print(message)
     if message.text == texts.abort:
         await state.reset_state()
         await message.answer(texts.success)

@@ -35,3 +35,6 @@ def create_user_keyboard(title_url_pairs):
     for pair in title_url_pairs:
         kb.add(InlineKeyboardButton(pair[0], pair[1]))
     return kb
+
+admin_menu_kb = ReplyKeyboardMarkup([[texts.channels_btn, texts.add_channel_btn, texts.delete_channel_btn],
+                                      [texts.create_code_btn]])
