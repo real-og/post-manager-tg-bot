@@ -1,6 +1,6 @@
 CREATE TABLE channels (
     channel_id BIGINT PRIMARY KEY,
-    name varchar(30)
+    name varchar(100)
 ); 
 
 CREATE TABLE access_codes (
