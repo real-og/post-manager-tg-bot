@@ -58,3 +58,5 @@ channels_btn = 'Каналы'
 add_channel_btn = 'Добавить канал'
 delete_channel_btn = 'Удалить канал'
 create_code_btn = 'Создать код'
+
+instruction_to_get_menu = 'Вводи /admin или нажимай на команду, чтобы выйти в меню'

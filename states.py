@@ -12,3 +12,4 @@ class State(StatesGroup):
     adding_buttons = State()
     choosing_day = State()
     choosing_time = State()
+    admin_menu = State()
