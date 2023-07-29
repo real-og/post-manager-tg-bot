@@ -10,3 +10,5 @@ class State(StatesGroup):
     typing_message = State()
     confirmation_message = State()
     adding_buttons = State()
+    choosing_day = State()
+    choosing_time = State()

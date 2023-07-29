@@ -21,7 +21,14 @@ yes_no_kb = ReplyKeyboardMarkup([[texts.yes, texts.no]], one_time_keyboard=True)
 
 message_menu_kb = InlineKeyboardMarkup(row_width=1)
 message_menu_kb.add(InlineKeyboardButton('Добавить URL-кнопки', callback_data='buttons'))
-message_menu_kb.add(InlineKeyboardButton('Отправить', callback_data='finish'))
+message_menu_kb.add(InlineKeyboardButton('Отправить сейчас', callback_data='finish'))
+message_menu_kb.add(InlineKeyboardButton('Запланировать отправку', callback_data='schedule'))
+
+
+choose_day_kb = InlineKeyboardMarkup(row_width=1)
+choose_day_kb.add(InlineKeyboardButton('Сегодня', callback_data='today'))
+choose_day_kb.add(InlineKeyboardButton('Завтра', callback_data='tomorrow'))
+choose_day_kb.add(InlineKeyboardButton('Послезавтра', callback_data='after_tomorrow'))
 
 def create_user_keyboard(title_url_pairs):
     kb = InlineKeyboardMarkup(row_width=1)

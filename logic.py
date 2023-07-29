@@ -2,6 +2,7 @@ import random
 import string
 import db
 import datetime
+import texts
 
 def generate_random_code(length):
     code = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=length))
@@ -36,3 +37,7 @@ def convert_input_to_buttons(text):
     buttons = text.split('\n')
     title_url_pairs = [pair.split(' - ') for pair in buttons]
     return title_url_pairs
+
+async def send_message_time(bot, chat_id, message_id, custom_kb, from_id):
+    await bot.copy_message(chat_id, from_id, message_id, reply_markup=custom_kb)
+    await bot.send_message(from_id, texts.success_posted)

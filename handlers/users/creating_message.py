@@ -26,10 +26,12 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
         await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
         await callback.message.answer(texts.success_posted)
-        await bot.send_message()
     elif callback.data == 'buttons':
         await callback.message.answer(texts.instruction_for_buttons)
         await State.adding_buttons.set()
+    elif callback.data == 'schedule':
+        await callback.message.answer(texts.ask_for_day_to_send, reply_markup=kb.choose_day_kb)
+        await State.choosing_day.set()
 
 
 @dp.message_handler(state=State.adding_buttons)
