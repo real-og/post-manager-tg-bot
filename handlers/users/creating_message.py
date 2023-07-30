@@ -34,6 +34,10 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
     elif callback.data == 'schedule':
         await callback.message.answer(texts.ask_for_day_to_send, reply_markup=kb.choose_day_kb)
         await State.choosing_day.set()
+    elif callback.data == 'change':
+        await callback.message.answer(texts.change_message)
+        await State.typing_message.set()
+        
 
 
 @dp.message_handler(state=State.adding_buttons)

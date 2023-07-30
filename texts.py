@@ -61,3 +61,5 @@ create_code_btn = 'Создать код'
 
 
 instruction_to_get_menu = 'Ты в меню'
+
+change_message = 'Присылай сообщение для отправки'

@@ -21,6 +21,7 @@ yes_no_kb = ReplyKeyboardMarkup([[texts.yes, texts.no]], one_time_keyboard=True)
 
 
 message_menu_kb = InlineKeyboardMarkup(row_width=1)
+message_menu_kb.add(InlineKeyboardButton('Изменить', callback_data='change'))
 message_menu_kb.add(InlineKeyboardButton('Добавить URL-кнопки', callback_data='buttons'))
 message_menu_kb.add(InlineKeyboardButton('Отправить сейчас', callback_data='finish'))
 message_menu_kb.add(InlineKeyboardButton('Запланировать отправку', callback_data='schedule'))
