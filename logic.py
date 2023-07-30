@@ -22,10 +22,11 @@ def check_access_code(code):
         return result['channel_id']
     
     if datetime.datetime.now() - last_reset > datetime.timedelta(hours=24):
-        db.reset_usage_count_for_code(code)
+        db.update_usage_count_for_code(code, 0)
         usage_count = 0
 
     elif usage_count < limit_count:
+        db.update_usage_count_for_code(code, usage_count + 1)
         return result['channel_id']
     else:
         return None

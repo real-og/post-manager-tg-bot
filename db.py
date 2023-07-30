@@ -53,9 +53,9 @@ def get_code(code):
         curs.execute(_SQL)
         return curs.fetchone()
     
-def reset_usage_count_for_code(code):
+def update_usage_count_for_code(code, val):
     with Database() as curs:
-        _SQL = f"""UPDATE access_codes SET usage_count = 0, last_reset = NOW() WHERE code = '{code}'"""
+        _SQL = f"""UPDATE access_codes SET usage_count = {val}, last_reset = NOW() WHERE code = '{code}'"""
         curs.execute(_SQL)
         
     
