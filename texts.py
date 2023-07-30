@@ -43,10 +43,10 @@ no = 'Нет'
 
 use_kb = 'Используйте клавиатуру'
 
-instruction_for_buttons = 'Добавляйте кнопки используя следующий синтаксис:\n \
+instruction_for_buttons = 'Добавляйте кнопки используя следующий синтаксис:\n\
 текст_кнопки - (дефис) ссылка_для_кнопки\nНапример:\n\n<code>Кнопка 1 - http://example1.com\nКнопка 2 - http://example2.com</code>'
 
-success_posted = 'Отправлено'
+success_posted = 'Отправлено! Чтобы продолжить, вводи код.'
 
 ask_for_day_to_send = 'Выбирайте день для отправки'
 
@@ -58,5 +58,6 @@ channels_btn = 'Каналы'
 add_channel_btn = 'Добавить канал'
 delete_channel_btn = 'Удалить канал'
 create_code_btn = 'Создать код'
+
 
 instruction_to_get_menu = 'Ты в меню'

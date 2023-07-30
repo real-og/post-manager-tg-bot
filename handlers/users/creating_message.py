@@ -7,7 +7,8 @@ import logic
 import keyboards as kb
 
 
-@dp.message_handler(state=State.typing_message)
+@dp.message_handler(state=State.typing_message,
+                    content_types=types.ContentType.ANY)
 async def send_welcome(message: types.Message, state: FSMContext):
     message_to_send = await message.send_copy(message.from_id)
     message_id = message_to_send.message_id
@@ -26,6 +27,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
         await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
         await callback.message.answer(texts.success_posted)
+        await State.entering_code.set()
     elif callback.data == 'buttons':
         await callback.message.answer(texts.instruction_for_buttons)
         await State.adding_buttons.set()
