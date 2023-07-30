@@ -11,7 +11,7 @@ def generate_channel_kb(channels):
     kb.add(InlineKeyboardButton('Отмена', callback_data='cancel'))
     return kb
 
-abort_kb = ReplyKeyboardMarkup([[texts.abort]])
+abort_kb = ReplyKeyboardMarkup([[texts.abort]], resize_keyboard=True, one_time_keyboard=True)
 
 code_types_kb = InlineKeyboardMarkup(row_width=1)
 code_types_kb.add(InlineKeyboardButton(texts.type_1, callback_data='0'))

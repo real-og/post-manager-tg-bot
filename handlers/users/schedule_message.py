@@ -11,7 +11,7 @@ import keyboards as kb
 
 @dp.callback_query_handler(state=State.choosing_day)
 async def send_channels(callback: types.CallbackQuery, state: FSMContext):
-    await callback.message.answer(texts.choose_time)
+    await callback.message.answer(texts.choose_time, reply_markup=kb.abort_kb)
     if callback.data == 'today':
         days_to_delay = 0
     elif callback.data == 'tomorrow':
@@ -24,7 +24,22 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
 
 @dp.message_handler(state=State.choosing_time)
 async def send_welcome(message: types.Message, state: FSMContext):
-    hours, minutes = message.text.split(':')
+    if message.text == texts.abort:
+        data = await state.get_data()
+        message_id = data.get('message_id')
+        kb_text = data.get('inline_kb_text')
+        custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
+        await bot.copy_message(message.from_id, message.from_id, message_id, reply_markup=custom_kb)
+        await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
+        await State.confirmation_message.set()
+        return
+
+
+    try:
+        hours, minutes = message.text.split(':')
+    except:
+        await message.answer(texts.error_time)
+        return
 
     data = await state.get_data()
 
@@ -36,7 +51,11 @@ async def send_welcome(message: types.Message, state: FSMContext):
     
     now = datetime.now()
     tomorrow = now + timedelta(days=days_to_delay)
-    desired_time = tomorrow.replace(hour=int(hours), minute=int(minutes), second=0, microsecond=0)
+    try:
+        desired_time = tomorrow.replace(hour=int(hours), minute=int(minutes), second=0, microsecond=0)
+    except:
+        await message.answer(texts.error_time)
+        return
     
     custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
 
@@ -47,3 +66,4 @@ async def send_welcome(message: types.Message, state: FSMContext):
                               'custom_kb': custom_kb, 
                               'from_id': message.from_user.id})
     await message.answer(texts.success_planned)
+    await State.entering_code.set()
