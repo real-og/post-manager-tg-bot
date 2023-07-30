@@ -15,17 +15,17 @@ error_forwarded = 'Ошибка при пересылке. Проверьте с
 
 delete_channels = 'Нажимай на канал, который хочешь удалить.'
 
-choose_to_create_code = 'выбирай для кода'
+choose_to_create_code = 'Выбирай канал, для которого создается код'
 
-error_bot_rights = 'бот не добавлен админом либо конфликт с другим ботом'
+error_bot_rights = 'Проблема с правами бота в канале'
 
-choose_code_type = 'выбирай тип'
+choose_code_type = 'Выбирай тип кода'
 
 type_1 = 'навсегда'
 type_2 = 'пост в день'
 
 def success_added_code(code, channel, type):
-    return f"код типа {type} создан дял канала {channel}\n\n<code>{code}</code>"
+    return f"Код типа {type} создан для канала {channel}\n\n<code>{code}</code>"
 
 error_channel_id = 'что-то не добавился канал'
 
@@ -59,4 +59,4 @@ add_channel_btn = 'Добавить канал'
 delete_channel_btn = 'Удалить канал'
 create_code_btn = 'Создать код'
 
-instruction_to_get_menu = 'Вводи /admin или нажимай на команду, чтобы выйти в меню'
+instruction_to_get_menu = 'Ты в меню'

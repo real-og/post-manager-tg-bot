@@ -23,7 +23,8 @@ async def send_welcome_admin(message: types.Message, state: FSMContext):
 async def send_added_channels(message: types.Message, state: FSMContext):
     channels = db.get_channels()
     await message.answer(texts.your_channels, reply_markup=kb.generate_channel_kb(channels))
-    await message.answer(texts.instruction_to_get_menu)
+    await message.answer(texts.instruction_to_get_menu, reply_markup=kb.admin_menu_kb)
+    await State.admin_menu.set()
 
 
 
@@ -33,5 +34,6 @@ async def send_added_channels(message: types.Message, state: FSMContext):
 async def send_added_channels(message: types.Message, state: FSMContext):
     channels = db.get_channels()
     await message.answer(texts.your_channels, reply_markup=kb.generate_channel_kb(channels))
-    await message.answer(texts.instruction_to_get_menu)
+    await message.answer(texts.instruction_to_get_menu, reply_markup=kb.admin_menu_kb)
+    await State.admin_menu.set()
 

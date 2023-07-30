@@ -8,6 +8,7 @@ def generate_channel_kb(channels):
     kb = InlineKeyboardMarkup(row_width=1)
     for channel in channels:
         kb.add(InlineKeyboardButton(channel['name'], callback_data=channel['channel_id']))
+    kb.add(InlineKeyboardButton('Отмена', callback_data='cancel'))
     return kb
 
 abort_kb = ReplyKeyboardMarkup([[texts.abort]])

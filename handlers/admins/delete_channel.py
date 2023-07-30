@@ -28,6 +28,10 @@ async def send_channels(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(filters.IDFilter(chat_id=ADMIN_IDS),
                     state=State.deleting_channel)
 async def send_channels(callback: types.CallbackQuery, state: FSMContext):
+    if callback.data == 'cancel':
+        await callback.message.answer(texts.admin_welcome, reply_markup=kb.admin_menu_kb)
+        await State.admin_menu.set()
+        return
     id = callback.data
     db.delete_channel(id)
     await callback.message.answer(texts.success_deleted)
