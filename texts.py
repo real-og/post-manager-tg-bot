@@ -21,7 +21,7 @@ error_bot_rights = 'Проблема с правами бота в канале'
 
 choose_code_type = 'Выбирай тип кода'
 
-type_1 = 'На месяц'
+type_1 = 'Навсегда'
 type_2 = '2 поста в день'
 
 def success_added_code(code, channel, type):
