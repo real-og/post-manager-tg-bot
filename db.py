@@ -41,10 +41,10 @@ def delete_channel(id: int):
         _SQL = f"""DELETE FROM channels where channel_id = {id};"""
         curs.execute(_SQL)
 
-def add_code(code, type, channel_id):
+def add_code(code, channel_id, day_amount, all_post_number, tg_post_number):
     with Database() as curs:
-        _SQL = f"""INSERT INTO access_codes (code, usage_count, limit_count, channel_id)
-                    VALUES ('{code}', 0, {type}, {channel_id});"""
+        _SQL = f"""INSERT INTO access_codes (code, limit_count_all, limit_count_tg_link, limit_days, channel_id)
+                    VALUES ('{code}', {all_post_number}, {tg_post_number}, {day_amount}, {channel_id});"""
         curs.execute(_SQL)
 
 def get_code(code):
@@ -53,9 +53,9 @@ def get_code(code):
         curs.execute(_SQL)
         return curs.fetchone()
     
-def update_usage_count_for_code(code, val):
-    with Database() as curs:
-        _SQL = f"""UPDATE access_codes SET usage_count = {val}, last_reset = NOW() WHERE code = '{code}'"""
-        curs.execute(_SQL)
+# def update_usage_count_for_code(code, val):
+#     with Database() as curs:
+#         _SQL = f"""UPDATE access_codes SET usage_count = {val}, last_reset = NOW() WHERE code = '{code}'"""
+#         curs.execute(_SQL)
         
     

@@ -13,3 +13,6 @@ class State(StatesGroup):
     choosing_day = State()
     choosing_time = State()
     admin_menu = State()
+    choosing_days_of_code = State()
+    choosing_all_post_number = State()
+    choosing_tg_post_number = State()

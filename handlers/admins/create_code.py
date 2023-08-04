@@ -41,23 +41,62 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         await callback.message.answer(texts.error_bot_rights)
         return
     await state.update_data(channel_id=id)
-    await callback.message.answer(texts.choose_code_type, reply_markup=kb.code_types_kb)
-    await State.choosing_type_of_code.set()
+
+    await callback.message.answer(texts.choose_code_days, reply_markup=kb.abort_kb)
+    await State.choosing_days_of_code.set()
 
 
-@dp.callback_query_handler(filters.IDFilter(chat_id=ADMIN_IDS),
-                    state=State.choosing_type_of_code)
-async def send_channels(callback: types.CallbackQuery, state: FSMContext):
-    type = callback.data
+@dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
+                    state=State.choosing_days_of_code)
+async def send_channels(message: types.Message, state: FSMContext):
+    days = message.text
+    if not days.isdecimal():
+        await message.answer(texts.error_number_expected)
+        return
+    if int(message.text) > 90:
+        await message.answer(texts.error_day_amount_too_much)
+        return
+    await state.update_data(day_amount=message.text)
+    await message.answer(texts.choose_post_whole_amount)
+    await State.choosing_all_post_number.set()
+
+
+@dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
+                    state=State.choosing_all_post_number)
+async def send_channels(message: types.Message, state: FSMContext):
+    all_post_number = message.text
+    if not all_post_number.isdecimal():
+        await message.answer(texts.error_number_expected)
+        return
+    if int(message.text) > 1000:
+        await message.answer(texts.error_post_amount_too_much)
+        return
+    await state.update_data(all_post_amount=message.text)
+    await message.answer(texts.choose_post_tg_amount)
+    await State.choosing_tg_post_number.set()
+
+
+@dp.message_handler(filters.IDFilter(chat_id=ADMIN_IDS),
+                    state=State.choosing_tg_post_number)
+async def send_channels(message: types.Message, state: FSMContext):
+    tg_post_number = message.text
+    if not tg_post_number.isdecimal():
+        await message.answer(texts.error_number_expected)
+        return
+    if int(message.text) > 1000:
+        await message.answer(texts.error_post_amount_too_much)
+        return
     code = logic.generate_random_code(14)
     data = await state.get_data()
     channel_id = data.get('channel_id')
+    day_amount = data.get('day_amount')
+    all_post_number = data.get('all_post_amount')
     if channel_id is None:
-        await callback.message.answer(texts.error_channel_id)
+        await message.answer(texts.error_channel_id)
         return
-    await callback.message.answer(texts.success_added_code(code, channel_id, type), reply_markup=kb.admin_menu_kb)
+    db.add_code(code, channel_id, day_amount, all_post_number, tg_post_number)
+    await message.answer(texts.success_added_code(code, channel_id, day_amount, all_post_number, tg_post_number), reply_markup=kb.admin_menu_kb)
     await State.admin_menu.set()
-    db.add_code(code, type, channel_id)
 
     
     

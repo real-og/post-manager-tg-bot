@@ -6,8 +6,11 @@ CREATE TABLE channels (
 CREATE TABLE access_codes (
   code VARCHAR(255) PRIMARY KEY,
   usage_count INTEGER DEFAULT 0,
-  limit_count INTEGER DEFAULT 0,
-  last_reset TIMESTAMP DEFAULT NOW(),
+  tg_link_usage_count INTEGER DEFAULT 0,
+  limit_count_all INTEGER DEFAULT 0,
+  limit_count_tg_link INTEGER DEFAULT 0,
+  limit_days INTEGER DEFAULT 0,
+  creation_datetime TIMESTAMP DEFAULT NOW(),
   channel_id BIGINT,
   FOREIGN KEY (channel_id) REFERENCES channels (channel_id) ON DELETE CASCADE
 );

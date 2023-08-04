@@ -24,8 +24,9 @@ choose_code_type = 'Выбирай тип кода'
 type_1 = 'Навсегда'
 type_2 = '2 поста в день'
 
-def success_added_code(code, channel, type):
-    return f"Код типа {type} создан для канала {channel}\n\n<code>{code}</code>"
+def success_added_code(code, channel_id, day_amount, all_post_number, tg_post_number):
+    
+    return f"Код на {day_amount} дней\nПостов всего, со ссылкой телеграм: {all_post_number} / {tg_post_number}\nCоздан для канала {channel_id}\n\n<code>{code}</code>"
 
 error_channel_id = 'что-то не добавился канал'
 
@@ -67,3 +68,15 @@ error_buttons = 'Какая-то проблема, смотри внимател
 change_message = 'Присылай сообщение для отправки'
 
 error_time = 'Проверь формат времени'
+
+choose_code_days = 'выбирай сколько дней'
+
+error_number_expected = 'Ошибка формата ввода'
+
+error_day_amount_too_much = "Значение больше 90"
+
+error_post_amount_too_much = "Значение больше 1000"
+
+choose_post_whole_amount = 'Всего постов'
+
+choose_post_tg_amount = 'Постов с ссылкой в тг'
