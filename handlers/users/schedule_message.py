@@ -6,6 +6,7 @@ import texts
 from states import *
 import logic
 import keyboards as kb
+import db
 
 
 
@@ -56,9 +57,12 @@ async def send_welcome(message: types.Message, state: FSMContext):
     except:
         await message.answer(texts.error_time)
         return
-    
+    code = data.get('code')
     custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
-
+    if 'https://t.me/' in kb_text:
+        db.implement_usage_count_for_code(code, True)
+    else:
+        db.implement_usage_count_for_code(code, False)
     scheduler.add_job(logic.send_message_time, trigger='date', run_date=desired_time,
                       kwargs={'bot': bot,
                               'chat_id': chat_id,

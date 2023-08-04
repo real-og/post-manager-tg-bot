@@ -53,9 +53,14 @@ def get_code(code):
         curs.execute(_SQL)
         return curs.fetchone()
     
-# def update_usage_count_for_code(code, val):
-#     with Database() as curs:
-#         _SQL = f"""UPDATE access_codes SET usage_count = {val}, last_reset = NOW() WHERE code = '{code}'"""
-#         curs.execute(_SQL)
+def implement_usage_count_for_code(code, tg_link=False):
+    with Database() as curs:
+        _SQL = f"UPDATE access_codes SET usage_count = usage_count + 1 "
+        if tg_link:
+          _SQL += ", tg_link_usage_count = tg_link_usage_count + 1 "
+        _SQL += f"WHERE code = '{code}'"
+        curs.execute(_SQL)
+
+        
         
     

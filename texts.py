@@ -80,3 +80,5 @@ error_post_amount_too_much = "Значение больше 1000"
 choose_post_whole_amount = 'Всего постов'
 
 choose_post_tg_amount = 'Постов с ссылкой в тг'
+
+error_link_violation = 'Ссылка на ресурс телеграм недоступна'

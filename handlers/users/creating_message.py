@@ -5,6 +5,7 @@ import texts
 from states import *
 import logic
 import keyboards as kb
+import db
 
 
 @dp.message_handler(state=State.typing_message,
@@ -24,8 +25,13 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         kb_text = data.get('inline_kb_text')
         chat_id = data.get('channel_id')
         message_id = data.get('message_id')
+        code = data.get('code')
         custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
         await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
+        if kb_text is not None and 'https://t.me/' in kb_text:
+            db.implement_usage_count_for_code(code, True)
+        else:
+            db.implement_usage_count_for_code(code, False)
         await callback.message.answer(texts.success_posted)
         await State.entering_code.set()
     elif callback.data == 'buttons':
@@ -42,8 +48,8 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
 
 @dp.message_handler(state=State.adding_buttons)
 async def send_welcome(message: types.Message, state: FSMContext):
+    data = await state.get_data()
     if message.text == texts.abort:
-        data = await state.get_data()
         message_id = data.get('message_id')
         kb_text = data.get('inline_kb_text')
         custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
@@ -51,8 +57,11 @@ async def send_welcome(message: types.Message, state: FSMContext):
         await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
         await State.confirmation_message.set()
         return
-
-
+    
+    code = data.get('code')
+    if not logic.check_is_link_allowed(code):
+        await message.answer(texts.error_link_violation, reply_markup=kb.abort_kb)
+        return
     await state.update_data(inline_kb_text=message.text)
 
     data = await state.get_data()
