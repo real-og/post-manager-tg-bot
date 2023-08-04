@@ -6,6 +6,7 @@ import texts
 
 def generate_channel_kb(channels):
     kb = InlineKeyboardMarkup(row_width=1)
+    kb.add(InlineKeyboardButton('Во все каналы', callback_data='0'))
     for channel in channels:
         kb.add(InlineKeyboardButton(channel['name'], callback_data=channel['channel_id']))
     kb.add(InlineKeyboardButton('Отмена', callback_data='cancel'))

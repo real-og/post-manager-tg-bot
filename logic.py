@@ -43,6 +43,15 @@ def convert_input_to_buttons(text):
     return title_url_pairs
 
 async def send_message_time(bot, chat_id, message_id, custom_kb, from_id):
+    if chat_id == '0' or chat_id == 0:
+        channels = db.get_channels()
+        for ch in channels:
+            try:
+                await bot.copy_message(ch.get('channel_id'), from_id, message_id, reply_markup=custom_kb)
+                await bot.send_message(from_id, texts.success_posted + ch.get('name'))
+            except:
+                await bot.send_message(from_id, texts.error_bot_rights)
+        return
     await bot.copy_message(chat_id, from_id, message_id, reply_markup=custom_kb)
     await bot.send_message(from_id, texts.success_posted)
 

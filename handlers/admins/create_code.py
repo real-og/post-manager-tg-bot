@@ -34,14 +34,15 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         await State.admin_menu.set()
         return
     id = callback.data
-    try: 
-        chat = await bot.get_chat(id)
-        await state.update_data(channel_id=id)
-    except:
-        await callback.message.answer(texts.error_bot_rights)
-        return
+    if id != '0':
+        try: 
+            chat = await bot.get_chat(id)
+            await state.update_data(channel_id=id)
+        except:
+            await callback.message.answer(texts.error_bot_rights)
+            return
+    
     await state.update_data(channel_id=id)
-
     await callback.message.answer(texts.choose_code_days, reply_markup=kb.abort_kb)
     await State.choosing_days_of_code.set()
 

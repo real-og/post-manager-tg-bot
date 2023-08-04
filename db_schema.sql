@@ -3,6 +3,8 @@ CREATE TABLE channels (
     name varchar(100)
 ); 
 
+insert into channels (channel_id, name) values (0, 'all');
+
 CREATE TABLE access_codes (
   code VARCHAR(255) PRIMARY KEY,
   usage_count INTEGER DEFAULT 0,

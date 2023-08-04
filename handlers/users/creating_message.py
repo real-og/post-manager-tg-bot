@@ -27,6 +27,19 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         message_id = data.get('message_id')
         code = data.get('code')
         custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
+
+        if chat_id == '0' or chat_id == 0:
+            sended = 0
+            channels = db.get_channels()
+            for ch in channels:
+                try:
+                    await bot.copy_message(ch.get('channel_id'), callback.from_user.id, message_id, reply_markup=custom_kb)
+                    sended += 1
+                except:
+                    await bot.send_message(callback.from_user.id, texts.error_bot_rights)
+            await callback.message.answer(texts.success_posted)
+            await State.entering_code.set()
+            return
         await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
         if kb_text is not None and 'https://t.me/' in kb_text:
             db.implement_usage_count_for_code(code, True)
