@@ -12,7 +12,7 @@ import db
 @dp.callback_query_handler(state=State.user_menu)
 async def send_channels(callback: types.CallbackQuery, state: FSMContext):
     if callback.data == 'enter':
-        await callback.message.answer(texts.enter_code, reply_markup=kb.abort_kb)
+        await callback.message.answer(texts.enter_code_short, reply_markup=kb.abort_kb)
         await State.entering_code.set()
     else:
         code_info = db.get_codes_and_channels([callback.data])
