@@ -70,7 +70,13 @@ def get_codes_and_channels(codes):
                              WHERE access_codes.code IN ({code_values});"""
         curs.execute(_SQL)
         return curs.fetchall()
+    
 
+def get_channel_name_by_id(id):
+    with Database() as curs:
+            _SQL = f"""SELECT * FROM channels WHERE channel_id = {id};"""
+            curs.execute(_SQL)
+            return curs.fetchone()
 
         
         

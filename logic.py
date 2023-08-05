@@ -45,6 +45,8 @@ async def send_message_time(bot, chat_id, message_id, custom_kb, from_id):
     if chat_id == '0' or chat_id == 0:
         channels = db.get_channels()
         for ch in channels:
+            if ch.get('channel_id') == '0' or ch.get('channel_id') == 0:
+                continue
             try:
                 await bot.copy_message(ch.get('channel_id'), from_id, message_id, reply_markup=custom_kb)
                 await bot.send_message(from_id, texts.success_posted + ch.get('name'))

@@ -17,3 +17,4 @@ class State(StatesGroup):
     choosing_all_post_number = State()
     choosing_tg_post_number = State()
     user_menu = State()
+    user_code_view = State()

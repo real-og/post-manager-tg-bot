@@ -23,7 +23,7 @@ yes_no_kb = ReplyKeyboardMarkup([[texts.yes, texts.no]], one_time_keyboard=True)
 
 message_menu_kb = InlineKeyboardMarkup(row_width=1)
 message_menu_kb.add(InlineKeyboardButton('Изменить', callback_data='change'))
-message_menu_kb.add(InlineKeyboardButton('Добавить URL-кнопки', callback_data='buttons'))
+message_menu_kb.add(InlineKeyboardButton('Установить URL-кнопки', callback_data='buttons'))
 message_menu_kb.add(InlineKeyboardButton('Отправить сейчас', callback_data='finish'))
 message_menu_kb.add(InlineKeyboardButton('Запланировать отправку', callback_data='schedule'))
 
@@ -51,4 +51,6 @@ def create_user_menu(codes):
         for chan in channels:
             kb.add(InlineKeyboardButton(text=chan['name'], callback_data=chan['code']))
     return kb
+
+create_post_kb = ReplyKeyboardMarkup([[texts.create_post_btn, texts.abort]], resize_keyboard=True, one_time_keyboard=True)
 

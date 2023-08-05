@@ -28,9 +28,15 @@ choose_code_type = 'Выбирай тип кода'
 type_1 = 'Навсегда'
 type_2 = '2 поста в день'
 
-def success_added_code(code, channel_id, day_amount, all_post_number, tg_post_number):
+def success_added_code(code, channel_id, day_amount, all_post_number, tg_post_number, name):
+    return textwrap.dedent(f"""
+        Код на {day_amount} дней
+        Постов: {all_post_number} 
+        C cсылкой на Telegram: {tg_post_number}
+        Cоздан для канала: {name}
+        <code>{code}</code>
+    """)
     
-    return f"Код на {day_amount} дней\nПостов всего, со ссылкой телеграм: {all_post_number} / {tg_post_number}\nCоздан для канала {channel_id}\n\n<code>{code}</code>"
 
 error_channel_id = 'что-то не добавился канал'
 
@@ -97,3 +103,7 @@ def generate_success_code(code):
         Всего постов: {code['limit_count_all'] - code['usage_count']}
         Постов с ссылкой на Telegram: {code['limit_count_tg_link'] - code['tg_link_usage_count']}
     """)
+
+create_post_btn = 'Отправить пост'
+
+type_post = 'Пиши свое сообщение'

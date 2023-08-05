@@ -6,6 +6,17 @@ from states import *
 import logic
 import keyboards as kb
 import db
+from handlers.users.commands import send_welcome_user
+
+@dp.message_handler(state=State.user_code_view)
+async def send_welcome(message: types.Message, state: FSMContext):
+    if message.text == texts.abort:
+        await send_welcome_user(message, state)
+    elif message.text == texts.create_post_btn:
+        await message.answer(texts.type_post)
+        await State.typing_message.set()
+    else:
+        await message.answer(texts.use_kb)
 
 
 @dp.message_handler(state=State.typing_message,
@@ -32,6 +43,8 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             sended = 0
             channels = db.get_channels()
             for ch in channels:
+                if ch.get('channel_id') == '0' or ch.get('channel_id') == 0:
+                    continue
                 try:
                     await bot.copy_message(ch.get('channel_id'), callback.from_user.id, message_id, reply_markup=custom_kb)
                     sended += 1
@@ -41,6 +54,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             await State.entering_code.set()
             return
         await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
+        
         if kb_text is not None and 'https://t.me/' in kb_text:
             db.implement_usage_count_for_code(code, True)
         else:
