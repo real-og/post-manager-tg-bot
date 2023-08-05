@@ -61,6 +61,17 @@ def implement_usage_count_for_code(code, tg_link=False):
         _SQL += f"WHERE code = '{code}'"
         curs.execute(_SQL)
 
+
+def get_codes_and_channels(codes):
+    with Database() as curs:
+        code_values = ', '.join([f"'{code}'" for code in codes])
+        _SQL = f""" SELECT * FROM channels
+                             JOIN access_codes ON channels.channel_id = access_codes.channel_id
+                             WHERE access_codes.code IN ({code_values});"""
+        curs.execute(_SQL)
+        return curs.fetchall()
+
+
         
         
     

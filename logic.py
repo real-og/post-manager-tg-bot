@@ -8,30 +8,29 @@ def generate_random_code(length):
     code = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=length))
     return code
 
-def check_access_code(code):
+def check_access_code(code) -> dict():
     result = db.get_code(code)
 
     if result is None:
         return None
 
-    # limit_tg_count = result['limit_count_tg_link'] 
+    limit_tg_count = result['limit_count_tg_link'] 
     limit_count = result['limit_count_all'] 
     usage_count = result['usage_count'] 
-    # usage_tg_count = result['tg_link_usage_count']
+    usage_tg_count = result['tg_link_usage_count']
     creation_datetime = result['creation_datetime']
     limit_days = result['limit_days']
     
-
-    if limit_count == 0:
-        return result['channel_id']
-    
     if datetime.datetime.now() - creation_datetime > datetime.timedelta(days=limit_days):
         return None
+    
+    if limit_count == 0:
+        return result
 
     if usage_count >= limit_count:
         return None
     
-    return result['channel_id']
+    return result
 
     
 

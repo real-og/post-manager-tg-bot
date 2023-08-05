@@ -1,3 +1,7 @@
+import textwrap
+from datetime import datetime, timedelta
+
+
 admin_welcome = 'Ты администратор. Выбирай, что сделать.'
 
 your_channels = 'Добавленные каналы и группы(проследи чтобы бот имел права администратора)'
@@ -82,3 +86,14 @@ choose_post_whole_amount = 'Всего постов'
 choose_post_tg_amount = 'Постов с ссылкой в тг'
 
 error_link_violation = 'Ссылка на ресурс телеграм недоступна'
+
+enter_code_btn = 'Ввести код'
+
+def generate_success_code(code):
+    datetime_expiration = code['creation_datetime'] + timedelta(days=code['limit_days'])
+    formatted_dt = datetime_expiration.strftime("%Y-%m-%d %H:%M")
+    return textwrap.dedent(f"""
+        Канал активирован до: {formatted_dt}
+        Всего постов: {code['limit_count_all'] - code['usage_count']}
+        Постов с ссылкой на Telegram: {code['limit_count_tg_link'] - code['tg_link_usage_count']}
+    """)

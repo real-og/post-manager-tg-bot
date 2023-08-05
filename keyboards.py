@@ -3,6 +3,7 @@ from aiogram.types import ReplyKeyboardRemove, \
     InlineKeyboardMarkup, InlineKeyboardButton
 
 import texts
+import db
 
 def generate_channel_kb(channels):
     kb = InlineKeyboardMarkup(row_width=1)
@@ -40,4 +41,14 @@ def create_user_keyboard(title_url_pairs):
 
 admin_menu_kb = ReplyKeyboardMarkup([[texts.channels_btn, texts.add_channel_btn, texts.delete_channel_btn],
                                       [texts.create_code_btn]], resize_keyboard=True, one_time_keyboard=True)
+
+
+def create_user_menu(codes):
+    kb = InlineKeyboardMarkup(row_width=1)
+    kb.add(InlineKeyboardButton(texts.enter_code_btn, callback_data='enter'))
+    if codes:
+        channels = db.get_codes_and_channels(codes)
+        for chan in channels:
+            kb.add(InlineKeyboardButton(text=chan['name'], callback_data=chan['code']))
+    return kb
 

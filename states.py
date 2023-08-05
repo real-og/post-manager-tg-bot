@@ -16,3 +16,4 @@ class State(StatesGroup):
     choosing_days_of_code = State()
     choosing_all_post_number = State()
     choosing_tg_post_number = State()
+    user_menu = State()
