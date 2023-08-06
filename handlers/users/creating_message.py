@@ -50,23 +50,46 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
                     sended += 1
                 except:
                     await bot.send_message(callback.from_user.id, texts.error_bot_rights)
-            await callback.message.answer(texts.success_posted)
-            await State.entering_code.set()
+            if sended > 0:
+                await callback.message.answer(texts.success_posted)
+                if kb_text is not None and 'https://t.me/' in kb_text:
+                    db.implement_usage_count_for_code(code, True)
+                else:
+                    db.implement_usage_count_for_code(code, False)
+
+            user_codes = data.get('user_codes')
+            await state.update_data(inline_kb_text=None)
+            if user_codes is None:
+                await state.update_data(user_codes=[])
+            await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
+            await State.user_menu.set()          
             return
-        await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
-        
+        try:
+            await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
+        except:
+            await callback.message.answer(texts.error_bot_rights)
+            return
+
         if kb_text is not None and 'https://t.me/' in kb_text:
             db.implement_usage_count_for_code(code, True)
         else:
             db.implement_usage_count_for_code(code, False)
         await callback.message.answer(texts.success_posted)
-        await State.entering_code.set()
+        user_codes = data.get('user_codes')
+        await state.update_data(inline_kb_text=None)
+        if user_codes is None:
+            await state.update_data(user_codes=[])
+        await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
+        await State.user_menu.set()
+
     elif callback.data == 'buttons':
         await callback.message.answer(texts.instruction_for_buttons, reply_markup=kb.abort_kb)
         await State.adding_buttons.set()
+
     elif callback.data == 'schedule':
         await callback.message.answer(texts.ask_for_day_to_send, reply_markup=kb.choose_day_kb)
         await State.choosing_day.set()
+
     elif callback.data == 'change':
         await callback.message.answer(texts.change_message)
         await State.typing_message.set()

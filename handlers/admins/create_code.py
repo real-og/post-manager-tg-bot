@@ -97,7 +97,6 @@ async def send_channels(message: types.Message, state: FSMContext):
         return
     db.add_code(code, channel_id, day_amount, all_post_number, tg_post_number)
     name = db.get_channel_name_by_id(channel_id).get('name')
-    print(name)
     await message.answer(texts.success_added_code(code, channel_id, day_amount, all_post_number, tg_post_number, name), reply_markup=kb.admin_menu_kb)
     await State.admin_menu.set()
 

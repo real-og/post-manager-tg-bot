@@ -21,6 +21,9 @@ def check_access_code(code) -> dict():
     creation_datetime = result['creation_datetime']
     limit_days = result['limit_days']
     
+    if limit_days == 0:
+        return result
+    
     if datetime.datetime.now() - creation_datetime > datetime.timedelta(days=limit_days):
         return None
     
@@ -49,12 +52,20 @@ async def send_message_time(bot, chat_id, message_id, custom_kb, from_id):
                 continue
             try:
                 await bot.copy_message(ch.get('channel_id'), from_id, message_id, reply_markup=custom_kb)
-                await bot.send_message(from_id, texts.success_posted + ch.get('name'))
+                await bot.send_message(from_id, texts.generate_planned_posted(ch.get('name')))
             except:
-                await bot.send_message(from_id, texts.error_bot_rights)
+                await bot.send_message(from_id, texts.error_bot_rights + f'\nКанал - {ch.get("name")}')
         return
-    await bot.copy_message(chat_id, from_id, message_id, reply_markup=custom_kb)
-    await bot.send_message(from_id, texts.success_posted)
+    
+    try:
+
+        await bot.copy_message(chat_id, from_id, message_id, reply_markup=custom_kb)
+        name = db.get_channel_name_by_id(chat_id)
+        await bot.send_message(from_id, name['name'])
+    except:
+        await bot.send_message(from_id, texts.error_bot_rights)
+
+    
 
 def check_is_link_allowed(code):
     result = db.get_code(code)

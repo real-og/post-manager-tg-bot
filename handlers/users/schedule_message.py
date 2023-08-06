@@ -7,6 +7,7 @@ from states import *
 import logic
 import keyboards as kb
 import db
+from handlers.users.commands import send_welcome_user
 
 
 
@@ -34,22 +35,17 @@ async def send_welcome(message: types.Message, state: FSMContext):
         await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
         await State.confirmation_message.set()
         return
-
-
+    
     try:
         hours, minutes = message.text.split(':')
     except:
         await message.answer(texts.error_time)
         return
-
     data = await state.get_data()
-
-   
     kb_text = data.get('inline_kb_text')
     chat_id = data.get('channel_id')
     message_id = data.get('message_id')
     days_to_delay = data.get('days_to_delay')
-    
     now = datetime.now()
     tomorrow = now + timedelta(days=days_to_delay)
     try:
@@ -59,10 +55,12 @@ async def send_welcome(message: types.Message, state: FSMContext):
         return
     code = data.get('code')
     custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
-    if 'https://t.me/' in kb_text:
+
+    if kb_text and 'https://t.me/' in kb_text:
         db.implement_usage_count_for_code(code, True)
     else:
         db.implement_usage_count_for_code(code, False)
+
     scheduler.add_job(logic.send_message_time, trigger='date', run_date=desired_time,
                       kwargs={'bot': bot,
                               'chat_id': chat_id,
@@ -70,4 +68,4 @@ async def send_welcome(message: types.Message, state: FSMContext):
                               'custom_kb': custom_kb, 
                               'from_id': message.from_user.id})
     await message.answer(texts.success_planned)
-    await State.entering_code.set()
+    await send_welcome_user(message, state)
