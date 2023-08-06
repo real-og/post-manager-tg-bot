@@ -26,12 +26,14 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             user_codes.remove(code_info['code'])
             await state.update_data(user_codes=user_codes)
             await state.update_data(inline_kb_text=None)
+            await state.update_data(channel_id=None)
             if user_codes is None:
                 await state.update_data(user_codes=[])
             await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
             await State.user_menu.set()          
             return
-            
+        
+        await state.update_data(channel_id=code_info['channel_id'])
         await callback.message.answer(texts.generate_success_code(code_info), reply_markup=kb.create_post_kb)
         await State.user_code_view.set()
 

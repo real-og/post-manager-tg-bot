@@ -18,3 +18,4 @@ class State(StatesGroup):
     choosing_tg_post_number = State()
     user_menu = State()
     user_code_view = State()
+    changing_message = State()

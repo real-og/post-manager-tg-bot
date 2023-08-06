@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.WARNING)
 ADMIN_IDS = os.environ.get('ADMIN_IDS').split(',')
 BOT_TOKEN = str(os.environ.get('BOT_TOKEN'))
 
-# storage = RedisStorage2(db=2)
-storage = MemoryStorage()
+storage = RedisStorage2(db=12)
+# storage = MemoryStorage()
 
 bot = Bot(token=BOT_TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot, storage=storage)

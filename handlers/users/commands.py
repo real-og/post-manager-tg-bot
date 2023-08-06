@@ -12,6 +12,7 @@ async def send_welcome_user(message: types.Message, state: FSMContext):
     if user_codes is None:
         await state.update_data(user_codes=[])
     await state.update_data(inline_kb_text=None)
+    await state.update_data(channel_id=None)
     await message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
     await State.user_menu.set()
 

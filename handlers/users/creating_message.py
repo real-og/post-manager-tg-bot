@@ -12,8 +12,9 @@ from handlers.users.commands import send_welcome_user
 async def send_welcome(message: types.Message, state: FSMContext):
     if message.text == texts.abort:
         await send_welcome_user(message, state)
+        return
     elif message.text == texts.create_post_btn:
-        await message.answer(texts.type_post)
+        await message.answer(texts.type_post, reply_markup=kb.abort_kb)
         await State.typing_message.set()
     else:
         await message.answer(texts.use_kb)
@@ -22,8 +23,34 @@ async def send_welcome(message: types.Message, state: FSMContext):
 @dp.message_handler(state=State.typing_message,
                     content_types=types.ContentType.ANY)
 async def send_welcome(message: types.Message, state: FSMContext):
+    if message.text == texts.abort:
+        await send_welcome_user(message, state)
+        return
     message_to_send = await message.send_copy(message.from_id)
     message_id = message_to_send.message_id
+    await state.update_data(message_id=message_id)
+    await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
+    await State.confirmation_message.set()
+
+@dp.message_handler(state=State.changing_message,
+                    content_types=types.ContentType.ANY)
+async def send_welcome(message: types.Message, state: FSMContext):
+    if message.text == texts.abort:
+        data = await state.get_data()
+        message_id = data.get('message_id')
+        kb_text = data.get('inline_kb_text')
+        custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
+        await bot.copy_message(message.from_id, message.from_id, message_id, reply_markup=custom_kb)
+        await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
+        await State.confirmation_message.set()
+        return
+    data = await state.get_data()
+    kb_text = data.get('inline_kb_text')
+    custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
+
+    message_to_send = await message.send_copy(message.from_id, reply_markup=custom_kb)
+    message_id = message_to_send.message_id
+    
     await state.update_data(message_id=message_id)
     await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
     await State.confirmation_message.set()
@@ -59,6 +86,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
 
             user_codes = data.get('user_codes')
             await state.update_data(inline_kb_text=None)
+            await state.update_data(channel_id=None)
             if user_codes is None:
                 await state.update_data(user_codes=[])
             await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
@@ -66,7 +94,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             return
         try:
             await bot.copy_message(chat_id, callback.from_user.id, message_id, reply_markup=custom_kb)
-        except:
+        except Exception as e:
             await callback.message.answer(texts.error_bot_rights)
             return
 
@@ -77,6 +105,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         await callback.message.answer(texts.success_posted)
         user_codes = data.get('user_codes')
         await state.update_data(inline_kb_text=None)
+        await state.update_data(channel_id=None)
         if user_codes is None:
             await state.update_data(user_codes=[])
         await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
@@ -92,7 +121,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
 
     elif callback.data == 'change':
         await callback.message.answer(texts.change_message)
-        await State.typing_message.set()
+        await State.changing_message.set()
         
 
 
@@ -109,7 +138,7 @@ async def send_welcome(message: types.Message, state: FSMContext):
         return
     
     code = data.get('code')
-    if not logic.check_is_link_allowed(code):
+    if not logic.check_is_link_allowed(code) and 'https://t.me/' in message.text:
         await message.answer(texts.error_link_violation, reply_markup=kb.abort_kb)
         return
     await state.update_data(inline_kb_text=message.text)
@@ -122,7 +151,11 @@ async def send_welcome(message: types.Message, state: FSMContext):
     except:
         await message.answer(texts.error_buttons, reply_markup=kb.abort_kb)
         return
-    await bot.copy_message(message.from_id, message.from_id, message_id, reply_markup=custom_kb)
+    try:
+        await bot.copy_message(message.from_id, message.from_id, message_id, reply_markup=custom_kb)
+    except:
+        await message.answer(texts.error_buttons, reply_markup=kb.abort_kb)
+        return
 
     await message.answer(texts.confirm_message, reply_markup=kb.message_menu_kb)
     await State.confirmation_message.set()

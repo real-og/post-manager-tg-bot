@@ -61,7 +61,7 @@ async def send_message_time(bot, chat_id, message_id, custom_kb, from_id):
 
         await bot.copy_message(chat_id, from_id, message_id, reply_markup=custom_kb)
         name = db.get_channel_name_by_id(chat_id)
-        await bot.send_message(from_id, name['name'])
+        await bot.send_message(from_id, 'Отложенный пост опубликован в - ' + name['name'])
     except:
         await bot.send_message(from_id, texts.error_bot_rights)
 
