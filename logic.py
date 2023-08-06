@@ -20,17 +20,14 @@ def check_access_code(code) -> dict():
     usage_tg_count = result['tg_link_usage_count']
     creation_datetime = result['creation_datetime']
     limit_days = result['limit_days']
+
+    if usage_count >= limit_count and limit_count != 0:
+        return None
     
     if limit_days == 0:
         return result
     
     if datetime.datetime.now() - creation_datetime > datetime.timedelta(days=limit_days):
-        return None
-    
-    if limit_count == 0:
-        return result
-
-    if usage_count >= limit_count:
         return None
     
     return result

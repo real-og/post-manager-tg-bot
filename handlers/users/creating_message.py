@@ -97,7 +97,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         except Exception as e:
             await callback.message.answer(texts.error_bot_rights)
             return
-
+        print('here')
         if kb_text is not None and 'https://t.me/' in kb_text:
             db.implement_usage_count_for_code(code, True)
         else:

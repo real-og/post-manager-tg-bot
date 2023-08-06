@@ -58,7 +58,7 @@ def implement_usage_count_for_code(code, tg_link=False):
         _SQL = f"UPDATE access_codes SET usage_count = usage_count + 1 "
         if tg_link:
           _SQL += ", tg_link_usage_count = tg_link_usage_count + 1 "
-        _SQL += f"WHERE code = '{code}'"
+        _SQL += f"WHERE code = '{code}';"
         curs.execute(_SQL)
 
 

@@ -21,7 +21,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             await callback.message.answer(texts.error_code_deleted)
             return
         code_info = db.get_codes_and_channels([callback.data])[0]
-        
+        print(code_info['code'])
         if (datetime.now() - code_info['creation_datetime'] > timedelta(days=code_info['limit_days']) and code_info['limit_days'] != 0) or \
            (code_info['usage_count'] >= code_info['limit_count_all'] and code_info['limit_count_all'] != 0):
             await callback.message.answer('Время либо количество постов израсходовано. Код будет удален из активированных')
@@ -36,7 +36,7 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
             await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
             await State.user_menu.set()          
             return
-        
+        await state.update_data(code=code_info['code'])
         await state.update_data(channel_id=code_info['channel_id'])
         await callback.message.answer(texts.generate_success_code(code_info), reply_markup=kb.create_post_kb)
         await State.user_code_view.set()

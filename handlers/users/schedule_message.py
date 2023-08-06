@@ -56,9 +56,12 @@ async def send_welcome(message: types.Message, state: FSMContext):
     code = data.get('code')
     custom_kb = kb.create_user_keyboard(logic.convert_input_to_buttons(kb_text))
 
+    print('sqch')
     if kb_text and 'https://t.me/' in kb_text:
+        print('1')
         db.implement_usage_count_for_code(code, True)
     else:
+        print(code)
         db.implement_usage_count_for_code(code, False)
 
     scheduler.add_job(logic.send_message_time, trigger='date', run_date=desired_time,
