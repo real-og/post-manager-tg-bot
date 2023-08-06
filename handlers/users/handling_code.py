@@ -16,6 +16,10 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
         await callback.message.answer(texts.enter_code_short, reply_markup=kb.abort_kb)
         await State.entering_code.set()
     else:
+        codes = db.get_codes_and_channels([callback.data])
+        if len(codes) == 0:
+            await callback.message.answer(texts.error_code_deleted)
+            return
         code_info = db.get_codes_and_channels([callback.data])[0]
         
         if (datetime.now() - code_info['creation_datetime'] > timedelta(days=code_info['limit_days']) and code_info['limit_days'] != 0) or \

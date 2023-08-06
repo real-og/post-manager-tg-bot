@@ -26,6 +26,7 @@ message_menu_kb.add(InlineKeyboardButton('Изменить', callback_data='chan
 message_menu_kb.add(InlineKeyboardButton('Установить URL-кнопки', callback_data='buttons'))
 message_menu_kb.add(InlineKeyboardButton('Отправить сейчас', callback_data='finish'))
 message_menu_kb.add(InlineKeyboardButton('Запланировать отправку', callback_data='schedule'))
+message_menu_kb.add(InlineKeyboardButton('Отменить', callback_data='abort'))
 
 
 choose_day_kb = InlineKeyboardMarkup(row_width=1)

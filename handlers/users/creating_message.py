@@ -122,6 +122,16 @@ async def send_channels(callback: types.CallbackQuery, state: FSMContext):
     elif callback.data == 'change':
         await callback.message.answer(texts.change_message)
         await State.changing_message.set()
+
+    elif callback.data == 'abort':
+        data = await state.get_data()
+        user_codes = data.get('user_codes')
+        await state.update_data(inline_kb_text=None)
+        await state.update_data(channel_id=None)
+        if user_codes is None:
+            await state.update_data(user_codes=[])
+        await callback.message.answer(texts.enter_code, reply_markup=kb.create_user_menu(user_codes))
+        await State.user_menu.set()
         
 
 

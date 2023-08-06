@@ -115,5 +115,7 @@ type_post = 'Пиши свое сообщение'
 
 enter_code_short = "Вводи код"
 
+error_code_deleted = 'Код недоступен'
+
 def generate_planned_posted(name=None):
     return f'Запланированное сообщение отправлено в канал {name}'
